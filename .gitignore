@@ -1,0 +1,29 @@
+# Private / legally restricted assets
+/private_assets/
+/client/assets/voices/*.mp3
+
+# Local environment files
+.env
+.env.*
+!.env.example
+**/appsettings.Development.json
+**/appsettings.Local.json
+
+# Build outputs
+/artifacts/
+/server/artifacts/
+**/bin/
+**/obj/
+/client/.dart_tool/
+/client/build/
+
+# IDE / OS
+/.idea/
+/.vs/
+**/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+Thumbs.db
+.DS_Store

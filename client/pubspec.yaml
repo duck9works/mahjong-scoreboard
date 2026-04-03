@@ -1,0 +1,29 @@
+name: mahjong_scoreboard
+description: realtime mahjong scoreboard
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  signalr_core: ^1.1.1
+  shared_preferences: ^2.3.2
+  file_picker: ^8.0.7
+  audioplayers: ^6.5.1
+  crop_your_image: ^2.0.0
+  flutter_svg: ^2.0.10+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/voices/
+    - assets/tiles/

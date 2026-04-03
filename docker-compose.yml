@@ -1,0 +1,48 @@
+﻿name: mahjong-scoreboard
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mahjong_scoreboard_db}
+      POSTGRES_USER: ${POSTGRES_USER:-mahjong}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+    volumes:
+      - mahjong_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__MahjongScore: Host=db;Port=5432;Database=${POSTGRES_DB:-mahjong_scoreboard_db};Username=${POSTGRES_USER:-mahjong};Password=${POSTGRES_PASSWORD:-change_me}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:17000:8080"
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        API_BASE_URL: ${API_BASE_URL:-https://example.com}
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:17001:80"
+    restart: unless-stopped
+
+volumes:
+  mahjong_postgres_data:
